@@ -37,16 +37,6 @@ const preventLogin = (req,res,next) => {
 }
 
 
-// - Debug Mode
-// const verifyToken = (req, res, next) => {
-//     const id = '123'
-//     const role = 'user'
-//     const name = 'fei'
-//     const profile = 'https://as1.ftcdn.net/v2/jpg/03/39/45/96/1000_F_339459697_XAFacNQmwnvJRqe1Fe9VOptPWMUxlZP8.jpg'
-//     req.user = {id,role,name,profile}
-//     next()
-// }
-
 module.exports = {
     verifyToken,
     protect,
