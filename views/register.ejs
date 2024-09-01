@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <!-- Header & Navbar -->
+    <%- include('./component/navbar') %>
+    <!-- Form-section -->
+    <div class="blur-bg-overlay"></div>
+    <section class="form-section">
+        <div class="form-container">
+            <div class="form-details become-monkey">
+                <h2>Become Monkey</h2>
+            </div>
+            <div class="form-content">
+                <h2>Register</h2>
+                <form action="/registerAuth" method="POST" autocomplete="off">
+                    <div class="input-field">
+                        <input type="text" name="name" required value="<%- data ? data.name : '' %>">
+                        <label>Enter your username</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" name="password" required autocomplete="new-password" value="<%- data ? data.password : '' %>">
+                        <label>Create password</label>
+                    </div>
+                    <div class="status-message"></div>
+                    <button type="submit">Register</button>
+                </form>
+                <div class="bottom-link">
+                    Already have an account? 
+                    <a href="/login" id="login-link">Login</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Message -->
+    <%- include('./component/snackbarMsg') %>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

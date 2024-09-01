@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <!-- Header & Navbar -->
+    <%- include('./component/navbar') %>
+    <!-- Form-section -->
+    <div class="blur-bg-overlay"></div>
+    <section class="form-section">
+        <div class="form-container">
+            <div class="form-details welcomeback">
+                <h2>Welcome Back</h2>
+            </div>
+            <div class="form-content">
+                <h2>Login</h2>
+                <form action="/loginAuth" method="POST" autocomplete="off">
+                    <div class="input-field">
+                        <input type="text" name="name" required value="<%- data ? data.name : '' %>">
+                        <label>Username</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" name="password" required autocomplete="new-password" value="<%- data ? data.password : '' %>">
+                        <label>Password</label>
+                    </div>
+                    <button type="submit">Log In</button>
+                </form>
+                <div class="bottom-link">
+                    Don't have an account?
+                    <a href="/register" id="login-link">Register</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Message -->
+    <%- include('./component/snackbarMsg') %>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

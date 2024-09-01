@@ -1,0 +1,20 @@
+<input type="checkbox" id="active-profile-pop-up">
+<div class="profile-pop-up">
+    <div class="profile-pop-up-container">
+        <label for="active-profile-pop-up" class="close-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
+        </label>
+
+        <div class="pop-up-title">
+            <h1>Edit Profile</h1>
+        </div>
+        <form action="/updateProfile" method="POST" class="pop-up-content" autocomplete="off">
+            <img src="<%- user.profile %>" alt="">
+            <input type="text" name="profile" id="profile-update-url" placeholder="Insert image URL here..." required  value="<%- user.profile %>">
+            <div class="btn-container">
+                <button type="submit">Edit Profile</button>
+                <button type="button" id="setdefault-profile-btn">Use Default Profile</button>
+            </div>
+        </form>
+    </div>
+</div>

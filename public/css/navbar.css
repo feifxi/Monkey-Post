@@ -1,0 +1,130 @@
+/*------------------
+    Header & Navbar
+-------------------*/
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+} 
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 50px;
+    background: var(--color-1);
+}
+
+nav a, 
+nav .create-post-btn,
+nav button{
+    color: var(--nav-text-color);
+    cursor: pointer;
+}
+nav a.logo {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+}
+nav .logo img {
+    width: 50px;
+    margin: 0 10px;
+}
+nav .logo:after {
+    content: "Post";
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    bottom: 9px;
+}
+nav .links-container {
+    display: flex;
+    height: 100%;
+    background: var(--color-1);
+    z-index: 10;    
+}
+.links-container a ,
+.links-container .create-post-btn,
+.links-container form button {
+    font-weight: 800;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 20px;
+}
+.links-container a:hover,
+.create-post-btn:hover,
+.links-container button:hover {
+    background: var(--color-2);
+}
+.profile-btn .profile-name {
+    color: white;
+    font-size: 14px;
+}
+.profile-btn img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    margin-left: 5px;
+    background: url(https://as1.ftcdn.net/v2/jpg/03/39/45/96/1000_F_339459697_XAFacNQmwnvJRqe1Fe9VOptPWMUxlZP8.jpg) no-repeat;
+    background-size: 100%; 
+}
+
+#active-sidebar {
+    display: none;
+}
+.close-sidebar-btn, .open-sidebar-btn {
+    padding: 20px;
+    display: none;
+}
+nav svg {
+    fill: white;
+}
+
+@media (max-width: 770px) {
+    nav {
+        padding: 0 10px;
+    }
+    nav .links-container {
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        width: 70%;
+        
+        position: fixed;
+        top: 0;
+        right: -100%;
+
+        transition: 0.50s ease-out;
+    }
+    .links-container a ,
+    .links-container .create-post-btn,
+    .links-container form button{
+        display: flex;
+        height: auto;
+        justify-content: start;
+        padding: 30px 20px;
+        width: 100%;
+    }
+    .close-sidebar-btn, .open-sidebar-btn {
+        display: block;
+    }
+    #active-sidebar:checked ~ .links-container {
+        right: 0;
+    }
+    #active-sidebar:checked ~ #sidebar-overlay {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.412);
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 9;
+        transition: 0.50s ease-out;
+    }
+}
