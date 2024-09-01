@@ -21,13 +21,6 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(cookieParser());
 
-// Spectate mode
-// app.use((req, res, next) => {
-//     console.log('Path : ',req.url)
-//     console.log('Data : ',req.body)
-//     next();
-// })
-
 // Routes
 app.use(postRotues);
 app.use(authRoutes);
