@@ -7,14 +7,14 @@ const verifyToken = async (req, res, next) => {
     try {
         const { token } = req.cookies
         if (!token) {
-            // console.log('Auth error : User not login yet')
+            // console.log('Auth : User not login yet')
             return next()
         }
         const { name , role } = jwt.verify(token,mySecretKey)
-        // Double check email
+        // Check if this username is exist
         const user = await User.findOne({name})
         if (!user) {
-            // console.log('Auth error : No this email in database')
+            // console.log('Auth : No this username in database')
             return next()
         }
         // Set the user identity

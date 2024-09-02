@@ -54,7 +54,6 @@ const loginAuth = async (req, res) => {
             httpOnly: true, 
             sameSite: "none"
         })
-        // console.log('Token : ',token)
         res.redirect('/')   
     } catch (error) {
         res.render('login', {user:req.user, message:{error:'Somthing went wrong..'}})

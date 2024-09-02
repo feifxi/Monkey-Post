@@ -9,11 +9,9 @@ const getAllPosts = async (req, res) => {
         if (req.query.success || req.query.error) {
             success = req.query.success;
             error = req.query.error;
-            // console.log('success : ',success,' - erorr :', error)
         }
         // Display profile section
         if (req.query.profile) {
-            // console.log(req.query);
             const id = req.query.profile;
             const ownerProfile = await User.findOne({_id:id});
             const posts = await Post.find({author:id}).populate('author', 'name profile _id').sort({ createdAt: -1 });
