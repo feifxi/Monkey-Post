@@ -18,7 +18,6 @@ app.set('view engine','ejs');
 
 // Middleware
 app.use(express.urlencoded({extended:false}));
-app.use(express.json());
 app.use(cookieParser());
 
 // Routes

@@ -1,5 +1,4 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 const { loginPage, registerPage, registerAuth , loginAuth, logout } = require('../controller/authController')
 const { verifyToken, preventLogin } = require('../middlewares/authMiddleware')
 
