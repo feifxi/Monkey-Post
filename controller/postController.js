@@ -4,90 +4,111 @@ const User = require('../models/User');
 
 const getAllPosts = async (req, res) => {
     try {
-        // Check status message
-        let success = null, error = null;
-        if (req.query.success || req.query.error) {
-            success = req.query.success;
-            error = req.query.error;
-        }
-        // Display profile section
-        if (req.query.profile) {
-            const id = req.query.profile;
-            const ownerProfile = await User.findOne({_id:id});
-            const posts = await Post.find({author:id}).populate('author', 'name profile _id').sort({ createdAt: -1 });
-            res.render('index',{user:req.user, message:{ownerProfile, success, error}, posts});
-        } 
-        else {
-            const posts = await Post.find().populate('author', 'name profile _id').sort({ createdAt: -1 });
-            res.render('index',{user:req.user, message:{success, error}, posts});
-        } 
+        const posts = await Post.find().populate('author', 'name profile _id').sort({ createdAt: -1 });
+        res.render('index',{
+            posts,
+            user: req.user, 
+            success: req.flash('success')[0],
+            error: req.flash('error')[0]
+        });
     } catch (error) {
-        if (error.message.toString().includes('Cast to ObjectId failed')) {
-            const statusMessage = encodeURIComponent('Something went wrong...');
-            return res.redirect(`/?error=${statusMessage}`);
-        }
-        res.render('index',{user:req.user, message:{error:'Something went wrong...'}, posts:[]});
+        res.render('index',{
+            posts:[],
+            user: req.user,
+            success: null,
+            error: 'Something went wrong...'
+        });
         console.log('Get all posts error : ',error.message)
     }
 }
 
-const createPost = async (req, res) => {
+const getPostsByProfile = async (req, res) => {
+    const { id } = req.query;
     try {
-        const { id }= req.user;
-        const { content, img } = req.body;
-        // Create Post
-        await Post.create({content:content.trim(), img:img.trim(), author:id});
-        // Redirect 
-        const statusMessage = encodeURIComponent('Create Post Successfully')
-        res.redirect(`/?profile=${id}&success=${statusMessage}`);
+        const userProfile = await User.findById(id);
+        const posts = await Post.find({author: id}).populate('author', 'name profile _id').sort({ createdAt: -1 });
+        res.render('profile',{
+            posts,
+            user: req.user, 
+            userProfile,
+            success: req.flash('success')[0],
+            error: req.flash('error')[0]
+        });
     } catch (error) {
-        const statusMessage = encodeURIComponent('Something went wrong...')
-        res.redirect(`/?profile=${req.user.id}&error=${statusMessage}`);
+        if (error.message.toString().includes('Cast to ObjectId failed')) {
+            req.flash('error','There is no user profile');
+            return res.redirect('/');
+        }
+        req.flash('error','Something went wrong...');
+        res.redirect('/');
+        console.log('Get posts profile error : ',error.message)
+    }
+}
+
+const createPost = async (req, res) => {
+    const { id } = req.user;
+    const { content, img } = req.body;
+    try {
+        // Create Post
+        await Post.create({
+            content:content.trim(), 
+            img:img.trim(), 
+            author:id
+        });
+        // Redirect 
+        req.flash('success','Create Post Successfully');
+        res.redirect(`/profile?id=${id}`);
+    } catch (error) {
+        req.flash('error','Something went wrong...');
+        res.redirect(`/profile?id=${id}`);
         console.log('Create post error : ',error.message)
     }
 }
 
 const updatePost = async (req, res) => {
+    const { id } = req.params;
+    const { content, img } = req.body;
     try { 
-        const { id } = req.params;
-        const { content, img } = req.body;
         // Check if post is exist 
         const editPost = await Post.findById(id) 
         // Check permission
         if (editPost.author._id.toString() !== req.user.id.toString()) {
-            const statusMessage = encodeURIComponent('Authentication fail');
-            return res.redirect(`/?profile=${id}&error=${statusMessage}`);
+            req.flash('error','Authentication fail');
+            return res.redirect(`/profile?id=${req.user.id}`);
         }
-        // Update post
-        await Post.findByIdAndUpdate(id, {content:content.trim(), img:img.trim()})
+        // Update Post
+        await Post.findByIdAndUpdate(id, {
+            content:content.trim(), 
+            img:img.trim()
+        })
         // Redirect 
-        const statusMessage = encodeURIComponent('Update Post Successfully');
-        res.redirect(`/?profile=${req.user.id}&success=${statusMessage}`);
+        req.flash('success','Update Post Successfully');
+        res.redirect(`/profile?id=${req.user.id}`);
     } catch (error) {
-        const statusMessage = encodeURIComponent('Something went wrong...')
-        res.redirect(`/?profile=${req.user.id}&error=${statusMessage}`);
+        req.flash('error','Something went wrong...');
+        res.redirect(`/profile?id=${req.user.id}`);
         console.log('Update post error : ', error.message)
-    }
+    } 
 }
 
 const deletePost = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
         // Check if post is exist 
         const removePost = await Post.findById(id)
         // Check permission
         if (removePost.author._id.toString() !== req.user.id.toString()) {
-            const statusMessage = encodeURIComponent('Authentication fail');
-            return res.redirect(`/?profile=${id}&error=${statusMessage}`);
+            req.flash('error','Authentication fail');
+            return res.redirect(`/profile?id=${req.user.id}`);
         }
-        // Delete post
+        // Delete Post
         await Post.findByIdAndDelete(id);
         // Redirect 
-        const statusMessage = encodeURIComponent('Delete Post Successfully');
-        res.redirect(`/?profile=${req.user.id}&success=${statusMessage}`);
+        req.flash('success','Delete Post Successfully');
+        res.redirect(`/profile?id=${req.user.id}`);
     } catch (error) {
-        const statusMessage = encodeURIComponent('Something went wrong...')
-        res.redirect(`/?profile=${req.user.id}&error=${statusMessage}`);
+        req.flash('error','Something went wrong...');
+        res.redirect(`/profile?id=${req.user.id}`);
         console.log('Delete post error : ', error.message)
     }
 }
@@ -95,6 +116,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
     getAllPosts,
+    getPostsByProfile,
     createPost,
     updatePost,
     deletePost,

@@ -4,7 +4,6 @@
         <label for="active-post-pop-up" class="close-btn">
             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
         </label>
-
         <div class="pop-up-title">
             <h1>Title101</h1>
         </div>
@@ -12,7 +11,7 @@
             <h3>Post Image</h3>
             <input type="text" name="img" placeholder="Insert image URL here..." required>
             <h3>Post Content</h3>
-            <textarea name="content"  placeholder="Enter your post content here..." required></textarea>
+            <textarea name="content"  placeholder="Enter your post content here..." required oninput="autoResize(this)"></textarea>
             <div class="btn-container"> 
                 <button type="submit" id="post-pop-up-btn">Button101</button>
             </div>

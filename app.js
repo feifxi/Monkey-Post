@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const flash = require('connect-flash');
 const connectDB = require('./config/connectDB');
 const authRoutes = require('./routes/authRoutes');
 const postRotues = require('./routes/postRoutes');
@@ -19,6 +21,14 @@ app.set('view engine','ejs');
 // Middleware
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
+// Configure session middleware
+app.use(session({
+    secret: 'mySecretKey555', // Replace with a secure secret
+    resave: false,
+    saveUninitialized: false,
+  }));  
+app.use(flash());
+
 
 // Routes
 app.use(postRotues);

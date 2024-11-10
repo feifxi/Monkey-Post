@@ -11,18 +11,20 @@
         </label>
         
         <div class="links-container">
+            <!-- Logged in -->
             <% if (user){ %>
                 <form action="/logout" method="post">
                     <button type="submit">Logout</button>
                 </form>
-                <label class="create-post-btn" for="active-post-pop-up">Create Post</label>
-                <a href="/?profile=<%- user.id %>" class="profile-btn">
+                <label class="create-post-btn" for="active-post-pop-up" onclick="createPost()">Create Post</label>
+                <a href="/profile?id=<%- user.id %>" class="profile-btn">
                     <span class="profile-name"><%- user.name %></span>
                     <img src="<%- user.profile %>" alt="" class="profile-img">
                 </a>
                 <label for="active-sidebar" class="close-sidebar-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
                 </label>
+            <!-- Not Loged in -->
             <% } else { %>
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>

@@ -1,8 +1,10 @@
 const router = require('express').Router();
-const { getAllPosts, createPost, updatePost, deletePost,} = require('../controller/postController');
+const { getAllPosts, getPostsByProfile, createPost, updatePost, deletePost} = require('../controller/postController');
 const { verifyToken, protect } = require('../middlewares/authMiddleware');
 
 router.get('/', verifyToken, getAllPosts)
+
+router.get('/profile', verifyToken, getPostsByProfile)
 
 router.post('/createPost', verifyToken, protect, createPost)
 

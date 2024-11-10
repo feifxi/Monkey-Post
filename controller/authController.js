@@ -4,11 +4,21 @@ const jwt = require('jsonwebtoken')
 const mySecretKey = process.env.JWT_SECRET
 
 const registerPage = (req, res) => {
-    res.render('register',{user:req.user, message:{}, data:null})
+    res.render('register',{
+        user: req.user,
+        success: null,
+        error: null,
+        data: null
+    })
 }
 
 const loginPage = (req, res) => {
-    res.render('login', {user:req.user, message:{}, data:null}) 
+    res.render('login',{
+        user: req.user,
+        success: null,
+        error: null,
+        data: null
+    })
 }
 
 const registerAuth = async (req, res) => {
@@ -17,16 +27,23 @@ const registerAuth = async (req, res) => {
     try {
         const profile = 'https://as1.ftcdn.net/v2/jpg/03/39/45/96/1000_F_339459697_XAFacNQmwnvJRqe1Fe9VOptPWMUxlZP8.jpg';
         await User.create({name, password, profile});
-        res.render('register',{user:req.user, message:{success:'Registered successfully'}, data:null});
+        res.render('register',{
+            user: req.user, 
+            success: 'Registered successfully',
+            error: null,
+            data: null
+        });
     } catch (error) { 
         let errorMsg = null;
         if (error.code === 11000){
             if (error.keyPattern.name) errorMsg = 'This username already associated with an account'
         }
-        else {
-            errorMsg = 'Somthing went wrong..'
-        }
-        res.render('register', {user:req.user, message:{error:errorMsg}, data}) 
+        res.render('register', {
+            user: req.user, 
+            success: null,
+            error: errorMsg || 'Somthing went wrong..',
+            data
+        }) 
         console.log('Register error : ', error.message)            
     } 
 }
@@ -37,10 +54,20 @@ const loginAuth = async (req, res) => {
         const data = {name, password}
         // Name validate
         const user = await User.findOne({name})
-        if (!user) return res.render('login', {user:req.user, message:{error:'No user found with this username'}, data})
+        if (!user) return res.render('login', {
+            user: req.user, 
+            success: null,
+            error: 'No user found with this username',
+            data
+        })
         // Password validate    
         const matchPw = await bcrypt.compare(password, user.password)
-        if (!matchPw) return res.render('login', {user:req.user, message:{error:'Invalid password'}, data}) 
+        if (!matchPw) return res.render('login', {
+            user: req.user,
+            success: null,
+            error: 'Invalid password',
+            data
+        }) 
         // JWT
         const token = jwt.sign(
             {name,role:'user'},
@@ -56,7 +83,11 @@ const loginAuth = async (req, res) => {
         })
         res.redirect('/')   
     } catch (error) {
-        res.render('login', {user:req.user, message:{error:'Somthing went wrong..'}})
+        res.render('login', {
+            user:req.user, 
+            success: null,
+            error:'Somthing went wrong..'
+        })
         console.log('Login error : ', error.message)
     }
 }
