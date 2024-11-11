@@ -21,9 +21,8 @@ app.set('view engine','ejs');
 // Middleware
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
-// Configure session middleware
 app.use(session({
-    secret: 'mySecretKey555', // Replace with a secure secret
+    secret: 'mySecretKey555', 
     resave: false,
     saveUninitialized: false,
   }));  

@@ -18,7 +18,12 @@ const verifyToken = async (req, res, next) => {
             return next()
         }
         // Set the user identity
-        req.user = {id:user._id, role, name:user.name, profile:user.profile}
+        req.user = {
+            id: user._id, 
+            name: user.name, 
+            profile: user.profile,
+            role
+        }
         next()
     } catch (err) {
         // console.log('Auth error : Token is not valid')

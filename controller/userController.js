@@ -1,10 +1,9 @@
 const User = require('../models/User');
-const Post = require('../models/Post');
 
 const updateUser = async (req, res) => {
+    const { id } = req.user;
+    const { profile } = req.body
     try { 
-        const { id } = req.user;
-        const { profile } = req.body
         // Validate data 
         if (profile === '') {
             req.flash('error','Please fill the input')
